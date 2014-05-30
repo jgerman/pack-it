@@ -65,7 +65,7 @@
     (cond  (.leaf this)
                (cond (.fit this w l) ; base case 3 this is a leaf and we have a fit
                         (let [left  (BinNode. nil nil (- (.getWidth this) w) (.getLength this))
-                              right (BinNode. nil nil  (.getWidth this) (- (.getLength this) l))]
+                              right (BinNode. nil nil (- (.getWidth this) w) (- (.getLength this) l))]
                           (.setLeft this left)
                           (.setRight this right)
                           (.setWidth this w)
