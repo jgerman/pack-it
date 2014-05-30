@@ -1,6 +1,7 @@
 (ns pack-it.core
   (:require [quil.core :refer :all]))
 
+; scratch pad code for now, will
 
 ; key functions for sorting
 
