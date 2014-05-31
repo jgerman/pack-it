@@ -4,10 +4,12 @@ A clojure library to handle bin packing. The motivation was for laying out parts
 
 A mutable just make things easy to work with.
 
+Note: Immutable version with zippers is started in pack-it.record-tree. It's much cleaner. The structure is there, need to implement the algorithm over the zipper which should be as straightforward as finding the right place to add and using the zipper tree manipulators to get a new tree.
+
 Known Issues:
 length and width maintain their orientation in searching. 
 
-## Examples
+## Examples (applicable only to the mutable version).
 
 ```
 (require 'pack-it.tree :reload)

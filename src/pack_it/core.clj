@@ -1,61 +1,23 @@
 (ns pack-it.core
-  (:require [quil.core :refer :all]))
+  (:require [quil.core :refer :all
+             pack-it.tree :refer all]))
 
 ; scratch pad code for now, will
 
 ; key functions for sorting
 
-(defn max-dimension [component]
-  (max (:length component) (:width component)))
-
-(defn length [component]
-  (:length component))
 
 
 
-(defn fits [node component]
-  (let [nl (:length node)
-        nw (:width node)
-        cl (:length component)
-        cw (:width component)]
-    (and (<= cl nl)
-         (<= cw nw))))
-
-(defn mk-node [component]
-  {:height (:height component)
-   :width (:width component)
-   :used true})
-
-; given a node and a component return a tree containing
-(defn split [node component]
-  (let [node-length (:length node)
-        node-width (:width node)
-        component-length (:length component)
-        component-width (:width component)
-        new-a {:length (- node-length component-length)
-               :width component-width
-               :used false
-               :x component-length
-               :y 0}
-        new-b {:length component-length
-               :width (- node-width component-width)
-               :used false
-               :x 0
-               :y component-width}]
-    {:length component-length
-     :width component-width
-     :used true
-     :left new-a
-     :right new-b
-     :x 0
-     :y 0}))
 
 
 
-(defn setup []
-  (smooth)
-  (frame-rate 1)
-  (background 200))
+
+(defn produce-rect [node origin-x orgin-y]
+  (println "Origin: " origin-x "," origin-y " Diag: " (+ origin-x (.getLength node)) "," (+ origin-y (.getWidth node))))
+
+
+
 
 (defn draw []
   (stroke 2)
