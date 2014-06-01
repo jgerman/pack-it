@@ -36,7 +36,11 @@
   (make-node [node children] (ComponentNode. (:length node) (:width node) (first children) (second children)))
   (container? [node] false))
 
-(defn gen-fit [w l]
+(defn mk-bin [l w]
+  "Returns a new zipper with an empty root of the size specified"
+  (tree-zip (BinNode. l w nil nil)))
+
+(defn gen-fit [l w]
   (fn [x]
     (and (container? x)
          (<= l (:length x))
@@ -44,7 +48,7 @@
          )))
 
 
-; todo ADD CODE TO FIND NODE AND ADD TO PERFORM THE INSERT
+
 (defn find-node [root fit-fn]
   (loop [loc root]
     (cond (zip/end? loc) nil
@@ -53,12 +57,12 @@
 
 ; there won't be any children; should add check though...
 ; TODO go through the functions and make sure it's clear when they take and return zippers vs records
-(defn split-node [node comp-w comp-l]
+(defn split-node [node comp-l comp-w]
   (let [node-w (:width (-> node zip/node))
         node-l (:length (->  node zip/node))
         left   (BinNode. (- node-w comp-w) node-l nil nil)
         right  (BinNode. (- node-w comp-l) (- node-l comp-l) nil nil)]
-             (ComponentNode. comp-w comp-l left right)))
+             (ComponentNode. comp-l comp-w left right)))
 
 
 #_(defn insert [tree w l]
@@ -66,10 +70,5 @@
     (if loc
     )))
 
-(defn print-tree [original]
-    (loop [loc (zip/seq-zip (seq original))]
-          (if (zip/end? loc)
-                  (zip/root loc)
-                        (recur (zip/next
-                           (do (println (zip/node loc))
-                                                                        loc))))))
+(defn pp-tree-node [node]
+  (println (:length node) "x" (:width node) " container? " (container? node)))
