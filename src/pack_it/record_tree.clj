@@ -52,6 +52,7 @@
           :else (recur (zip/next loc)))))
 
 ; there won't be any children; should add check though...
+; TODO go through the functions and make sure it's clear when they take and return zippers vs records
 (defn split-node [node comp-w comp-l]
   (let [node-w (:width (-> node zip/node))
         node-l (:length (->  node zip/node))
