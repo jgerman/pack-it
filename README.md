@@ -9,6 +9,14 @@ Note: Immutable version with zippers is started in pack-it.record-tree. It's muc
 Known Issues:
 length and width maintain their orientation in searching. 
 
+
+## Splitting a Node ##
+
+When an empty node is found that is the appropriate size that node is replaces with a subtree consisting of a root representing the component being inserted who's
+left and right children are two new empty nodes divided as shown by the image below.
+
+![alt tag] (docs/binpacknodesplit.jpg)
+
 ## Examples (applicable only to the mutable version).
 
 ```
