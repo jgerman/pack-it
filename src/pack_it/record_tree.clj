@@ -9,31 +9,30 @@
   (make-node [node children])
   (container? [node]))
 
-; this is an interesting trick, not sure if I like it yet
 (extend-type Object TreeNode
              (branch? [node] false)
-             (make-node [node children] node))
+             (make-node [node children] node)
+             (container [node] false))
 
-
-; the above trick lets us do this
 (defn tree-zip
   "Make a zipper out of a tree."
   [root]
   (zip/zipper branch? node-children make-node root))
 
-; do I want two BinNode types? one for the root and one for interior?
 (defrecord BinNode [length width left right]
   TreeNode
   (branch? [node] true)
   (node-children [node] (seq (remove nil? [left right])))
-  (make-node [node children] (BinNode. (:length node) (:width node) (first children) (second children)))
+  (make-node [node children]
+    (BinNode. (:length node) (:width node) (first children) (second children)))
   (container? [node] true))
 
 (defrecord ComponentNode [length width left right]
   TreeNode
   (branch? [node] true)
   (node-children [node] (seq (remove nil? [left right])))
-  (make-node [node children] (ComponentNode. (:length node) (:width node) (first children) (second children)))
+  (make-node [node children]
+    (ComponentNode. (:length node) (:width node) (first children) (second children)))
   (container? [node] false))
 
 (defn mk-bin [l w]
@@ -60,8 +59,8 @@
 (defn split-node [node comp-l comp-w]
   (let [node-w (:width (-> node zip/node))
         node-l (:length (->  node zip/node))
-        left   (BinNode. (- node-w comp-w) node-l nil nil)
-        right  (BinNode. (- node-w comp-l) (- node-l comp-l) nil nil)]
+        left   (BinNode. node-l (- node-w comp-w) nil nil)
+        right  (BinNode. (- node-l comp-l) comp-w nil nil)]
              (ComponentNode. comp-l comp-w left right)))
 
 
@@ -72,3 +71,10 @@
 
 (defn pp-tree-node [node]
   (println (:length node) "x" (:width node) " container? " (container? node)))
+
+;
+(defn print-tree [zipped-tree]
+  (loop [loc zipped-tree]
+    (cond (zip/end? loc) loc
+          :else (recur (do (pp-tree-node (->  loc zip/node))
+                     (zip/next loc))))))
